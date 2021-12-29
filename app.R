@@ -27,7 +27,6 @@ source('global.R', local = TRUE)
 
 ui <- fluidPage(
   # Set up popup
-  useShinyalert(),
                 ### Left Side (map)
     fluidRow(class = "map",
              column(6, leafletOutput("mymap", height = '100vh'),
@@ -57,8 +56,10 @@ ui <- fluidPage(
                    actionButton("oldSites", label = "Display old LTER sites"),
                    left = 50, top = 10,
                    align = "left"),
-        
-        downloadLink("downloadData",label=""), # Invisible download link
+        fixedPanel(class = "download",
+                   actionButton("Download", label = a(href="LTERmap.png", "Download Map", download=NA, target="_blank")),
+                   left = 50, top = 45,
+                   align = "left"),
     
     tags$head(tags$style(HTML("
       .row1{display: flex;
@@ -139,9 +140,9 @@ server <- function(input, output, session) {
                   addEasyButton(easyButton(id = "Reset", icon = "fa-undo", title = "Reset",
                     onClick=JS("function(btn, map){ map.setZoom(2); map.setView([-110, -20])}"))) %>% 
                   
-                  addEasyButton(easyButton(id = "download", icon = "fa-download", title = "Download Map",
-                                           onClick=JS("function(btn, map) {
-                                  Shiny.onInputChange('download', 'clicked', {priority: 'event'});}"))) %>% 
+                  # addEasyButton(easyButton(id = "download", icon = "fa-download", title = "Download Map",
+                  #                          onClick=JS("function(btn, map) {
+                  #                 Shiny.onInputChange('download', 'clicked', {priority: 'event'});}"))) %>% 
                   
                   setMaxBounds(lng1 = -230, lat1 = -90, lng2=10, lat2=90)
           
@@ -149,17 +150,18 @@ server <- function(input, output, session) {
           ##---------------------##
           ##  Download on click  ##
           ##---------------------##
+            # Handled via a href to the actual file (genius, thanks internet)
           
-          observeEvent(input$download, {
-            output$downloadData<<-downloadHandler(filename = "LTERMap.png",
-                                                  content =  mapshot(
-                                                    which_map(), filename = "LTERMap.png", cliprect = "viewport",
-                                                    zoom = 3
-                                                  ),
-                                                  )
-            jsinject <- "setTimeout(function(){window.open($('#downloadData').attr('href'))}, 100);"
-            session$sendCustomMessage(type = 'jsCode', list(value = jsinject))    
-          })
+          # observeEvent(input$download, {
+          #   output$downloadData<<-downloadHandler(filename = "LTERMap.png",
+          #                                         content =  mapshot(
+          #                                           which_map(), filename = "LTERMap.png", cliprect = "viewport",
+          #                                           zoom = 3
+          #                                         ),
+          #                                         )
+          #   jsinject <- "setTimeout(function(){window.open($('#downloadData').attr('href'))}, 100);"
+          #   session$sendCustomMessage(type = 'jsCode', list(value = jsinject))    
+          # })
               
           ##---------------##
           ## Zoom on click ##
@@ -358,6 +360,8 @@ server <- function(input, output, session) {
             }
           })
           
+          
+          
           # Set up reactive values:
           message("text reactive values")
           current_text <- reactiveValues(siteName = "<h1>Interactive Map of LTER Sites</h1>
@@ -366,7 +370,7 @@ server <- function(input, output, session) {
                                          siteImage = "",
                                          siteInfo = "")
           
-          old_text <- reactiveValues(siteName = paste("<h1>", "Defunct LTER Sites", "</h1>", "<br>", "<h3>", "These LTER sites have been phased out of the LTER Network, though many sites continue to support other research initiaves and some still manage to contribute to current LTER science.", "</h3>"),
+          old_text <- reactiveValues(siteName = paste("<h1>", "Archived LTER Sites", "</h1>", "<br>", "<h3>", "These LTER sites have been phased out of the LTER Network, though many sites continue to support other research initiaves and some still manage to contribute to current LTER science.", "</h3>"),
                                      siteImage = "",
                                      siteInfo = "")
           # 
@@ -423,8 +427,13 @@ server <- function(input, output, session) {
     ######              #####
     #    Site info modal    #
     ######              #####
+          # Create default text when nothing is selected
     observeEvent(input$button, {
-      message("input$button clicked")
+      if(is.null(input$mymap_marker_click$id)){
+        shinyalert(
+          "Click a site to see more information"
+        )
+      } else {
       shinyalert(
         title = paste("<h2>", filtered_df()$Name, "Description", "</h2>"),
         text = paste("<h4>", filtered_df()$Description, "</h4>", "<hr>", 
@@ -438,6 +447,7 @@ server <- function(input, output, session) {
         html = TRUE,
         size = "l")
       message("shinyalert activated")
+      }
     })
     
       ######              #####
@@ -456,6 +466,20 @@ server <- function(input, output, session) {
           # Update action button based on oldSites click
           observeEvent(input$oldSites, {
             updateActionButton(session, "oldSites", label = which_label())
+          })
+          
+          
+          # Restore default text based on oldSites click
+          observeEvent(input$oldSites, {
+              old_text$siteName = paste("<h1>", "Archived LTER Sites", "</h1>", "<br>", "<h3>", "These LTER sites have been phased out of the LTER Network, though many sites continue to support other research initiaves and some still manage to contribute to current LTER science.", "</h3>")
+              old_text$siteImage = ""
+              old_text$siteInfo = ""
+              
+              current_text$siteName = "<h1>Interactive Map of LTER Sites</h1>
+                                        <br>
+                                        <h3>This map displays all 28 active LTER sites. Click on each site for more information!</h3>"
+              current_text$siteImage = ""
+              current_text$siteInfo = ""
           })
           
 }
