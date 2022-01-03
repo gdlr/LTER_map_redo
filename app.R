@@ -465,7 +465,7 @@ server <- function(input, output, session) {
           
           # Update action button based on oldSites click
           observeEvent(input$oldSites, {
-            updateActionButton(session, "Download", label = which_download())
+            updateActionButton(session, "oldSites", label = which_label())
           })
           
           which_download <- reactive({
@@ -474,6 +474,11 @@ server <- function(input, output, session) {
             } else {
               '<a href="oldLTERmap.png"> Download Map</a>'
             }
+          })
+          
+          # Update action button based on oldSites click
+          observeEvent(input$oldSites, {
+            updateActionButton(session, "Download", label = which_download())
           })
           
           # Restore default text based on oldSites click
