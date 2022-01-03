@@ -53,7 +53,7 @@ ui <- fluidPage(
                              ),
         ),
         fixedPanel(class = "oldsites",
-                   actionButton("oldSites", label = "Display old LTER sites"),
+                   actionButton("oldSites", label = "Display archived LTER sites"),
                    left = 50, top = 10,
                    align = "left"),
         fixedPanel(class = "download",
@@ -370,7 +370,7 @@ server <- function(input, output, session) {
                                          siteImage = "",
                                          siteInfo = "")
           
-          old_text <- reactiveValues(siteName = paste("<h1>", "Archived LTER Sites", "</h1>", "<br>", "<h3>", "These LTER sites have been phased out of the LTER Network, though many sites continue to support other research initiaves and some still manage to contribute to current LTER science.", "</h3>"),
+          old_text <- reactiveValues(siteName = paste("<h1>", "Archived LTER Sites", "</h1>", "<br>", "<h3>", "These LTER sites have been phased out of the LTER Network, though most sites continue to support other research initiaves and many still manage to contribute to current LTER science.", "</h3>"),
                                      siteImage = "",
                                      siteInfo = "")
           # 
@@ -457,7 +457,7 @@ server <- function(input, output, session) {
           # Create variable action button label based on T/F switch
           which_label <- reactive({
             if (whichplot()) {
-              "Display old LTER sites"
+              "Display archived LTER sites"
             } else {
               "Display current LTER sites"
              }
@@ -465,9 +465,16 @@ server <- function(input, output, session) {
           
           # Update action button based on oldSites click
           observeEvent(input$oldSites, {
-            updateActionButton(session, "oldSites", label = which_label())
+            updateActionButton(session, "Download", label = which_download())
           })
           
+          which_download <- reactive({
+            if (whichplot()) {
+              '<a href="LTERmap.png"> Download Map</a>'
+            } else {
+              '<a href="oldLTERmap.png"> Download Map</a>'
+            }
+          })
           
           # Restore default text based on oldSites click
           observeEvent(input$oldSites, {
