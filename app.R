@@ -28,6 +28,7 @@ source('global.R', local = TRUE)
 ui <- fluidPage(
   # Set up popup
                 ### Left Side (map)
+  useShinyalert(),
     fluidRow(class = "map",
              column(6, leafletOutput("mymap", height = '100vh'),
                     offset = 0,
@@ -114,13 +115,12 @@ server <- function(input, output, session) {
           ##-------------##
           ## Current Map ##
           ##-------------##
-          message("made current map")
           
           current_map <-  leaflet() %>%
                       addProviderTiles(providers$Esri.WorldTerrain,
                                        options = providerTileOptions(minZoom = 2)) %>% 
                   
-                  addMarkers(data = current_extra[1,], label = ~(Name), layerId = ~Code, popup =~text, icon = Admin) %>% # NCO
+                  addMarkers(data = current_extra[1,], label = ~(Name), layerId = ~Code, popup =~text, icon = Admin) %>% # LNO
                   addMarkers(data = current_extra[2,], label = ~(Name), layerId = ~Code, popup =~text, icon = MarineNeg) %>% # CCE
                   addMarkers(data = current_extra[3,], label = ~(Name), layerId = ~Code, popup =~text, icon = `mixed_landscape`) %>% # CDR
                   addMarkers(data = current_extra[4,], label = ~(Name), layerId = ~Code, popup =~text, icon = Forest) %>% # HRB
@@ -146,7 +146,7 @@ server <- function(input, output, session) {
                   
                   setMaxBounds(lng1 = -230, lat1 = -90, lng2=10, lat2=90)
           
-          
+          message("made current map")
           ##---------------------##
           ##  Download on click  ##
           ##---------------------##
@@ -267,7 +267,7 @@ server <- function(input, output, session) {
                   layout(legend = list(orientation = "h",   # show entries horizontally
                                        xanchor = "center",
                                        x = 0.4,
-                                       y=-0.1,
+                                       y= -0.1,
                                        tracegroupgap = 0)) %>% 
                   layout(title = "LTER Timeline", font = list(size = 16)) %>% 
                         config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "lasso2d", "toggleSpikelines", "zoomIn2d", "zoomOut2d", "hoverCompareCartesian", "hoverClosestCartesian", "autoScale2d", "resetScale2d"),

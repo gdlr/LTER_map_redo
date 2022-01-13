@@ -29,11 +29,11 @@ current_sites <- map_data %>%
 
 current <- map_coords %>% 
   filter(`Active?` == "Active") %>% 
-  filter(!Code %in% c("NCO", "HBR", "PIE", "CDR", "JRN", "CCE", "VCR", "NES"))
+  filter(!Code %in% c("LNO", "HBR", "PIE", "CDR", "JRN", "CCE", "VCR", "NES"))
 
 current_extra <- map_coords %>% 
   filter(`Active?` == "Active") %>% 
-  filter(Code %in% c("NCO", "HBR", "PIE", "CDR", "JRN", "CCE", "VCR", "NES"))  # Order = NCO, CCE, CDR, HBR, JRN, PIE, VCR
+  filter(Code %in% c("LNO", "HBR", "PIE", "CDR", "JRN", "CCE", "VCR", "NES"))  # Order = LNO, CCE, CDR, HBR, JRN, PIE, VCR
 
 inactive_sites <- map_coords %>% 
   filter(`Active?` == "Inactive")
