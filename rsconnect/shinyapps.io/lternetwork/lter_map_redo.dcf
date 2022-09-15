@@ -5,7 +5,7 @@ account: lternetwork
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4881377
-bundleId: 5430770
+bundleId: 6303494
 url: https://lternetwork.shinyapps.io/lter_map_redo/
-when: 1641239358.90813
-lastSyncTime: 1641239358.90814
+when: 1663212019.74693
+lastSyncTime: 1663212019.74696
