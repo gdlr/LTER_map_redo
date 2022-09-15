@@ -193,7 +193,7 @@ server <- function(input, output, session) {
           #   Old Sites Map   #
           ###---------------###
           old_map <-  leaflet() %>%
-            addProviderTiles(providers$Esri.WorldTerrain,
+            addProviderTiles(providers$Esri.WorldImagery,
                              options = providerTileOptions(minZoom = 2)) %>% 
             addCircleMarkers(data = inactive_sites,
                              fillColor = ~palette(Type),
