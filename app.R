@@ -127,7 +127,6 @@ server <- function(input, output, session) {
                   addMarkers(data = current_extra[5,], label = ~(Name), layerId = ~Code, popup =~text, icon = `mixed_landscape_neg`) %>% # JRN
                   addMarkers(data = current_extra[6,], label = ~(Name), layerId = ~Code, popup =~text, icon = Marine) %>% # NES
                   addMarkers(data = current_extra[7,], label = ~(Name), layerId = ~Code, popup =~text, icon = Coastal) %>% # PIE
-                  addMarkers(data = current_extra[8,], label = ~(Name), layerId = ~Code, popup =~text, icon = Coastalneg) %>% #VCR
                   
                   addCircleMarkers(data = current, fillColor = ~palette(Type),
                                    color = "black",
@@ -193,7 +192,7 @@ server <- function(input, output, session) {
           #   Old Sites Map   #
           ###---------------###
           old_map <-  leaflet() %>%
-            addProviderTiles(providers$Esri.WorldImagery,
+            addProviderTiles(providers$Esri.WorldTerrain,
                              options = providerTileOptions(minZoom = 2)) %>% 
             addCircleMarkers(data = inactive_sites,
                              fillColor = ~palette(Type),
@@ -366,7 +365,7 @@ server <- function(input, output, session) {
           message("text reactive values")
           current_text <- reactiveValues(siteName = "<h1>Interactive Map of LTER Sites</h1>
                                                      <br>
-                                                     <h3>This map displays all 28 active LTER sites. Click on each site for more information!</h3>",
+                                                     <h3>This map displays all 27 active LTER sites. Click on each site for more information!</h3>",
                                          siteImage = "",
                                          siteInfo = "")
           
@@ -489,7 +488,7 @@ server <- function(input, output, session) {
               
               current_text$siteName = "<h1>Interactive Map of LTER Sites</h1>
                                         <br>
-                                        <h3>This map displays all 28 active LTER sites. Click on each site for more information!</h3>"
+                                        <h3>This map displays all 27 active LTER sites. Click on each site for more information!</h3>"
               current_text$siteImage = ""
               current_text$siteInfo = ""
           })

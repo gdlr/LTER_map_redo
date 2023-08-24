@@ -29,11 +29,11 @@ current_sites <- map_data %>%
 
 current <- map_coords %>% 
   filter(`Active?` == "Active") %>% 
-  filter(!Code %in% c("LNO", "HBR", "PIE", "CDR", "JRN", "CCE", "VCR", "NES"))
+  filter(!Code %in% c("LNO", "HBR", "PIE", "CDR", "JRN", "CCE", "NES"))
 
 current_extra <- map_coords %>% 
   filter(`Active?` == "Active") %>% 
-  filter(Code %in% c("LNO", "HBR", "PIE", "CDR", "JRN", "CCE", "VCR", "NES"))  # Order = LNO, CCE, CDR, HBR, JRN, PIE, VCR
+  filter(Code %in% c("LNO", "HBR", "PIE", "CDR", "JRN", "CCE", "NES"))  # Order = LNO, CCE, CDR, HBR, JRN, PIE, VCR
 
 inactive_sites <- map_coords %>% 
   filter(`Active?` == "Inactive")
@@ -46,7 +46,7 @@ current_year <- as.numeric((format(Sys.Date(), "%Y")))
 palette = colorFactor(c("Admin" = "grey50", 
                         "Forest" = "forestgreen",
                         "Tundra" = "tan",
-                        "Urban" = "grey20",
+                        "Urban" = "lavenderblush3",
                         "Marine" = "steelblue4",
                         "Mixed Landscape" = "darkgoldenrod3",
                         "Data" = "darkred",
@@ -55,7 +55,7 @@ palette = colorFactor(c("Admin" = "grey50",
                         "Freshwater" = "aquamarine2"),
                       levels = c("Admin", "Forest", "Tundra", "Urban", "Marine", "Mixed Landscape", "Data", "Coastal", "Grassland", "Freshwater"))
 
-colors <- c("Admin" = "grey50", "Forest" = "forestgreen", "Tundra" = "tan", "Urban" = "grey20", "Marine" = "steelblue4", "Mixed Landscape" = "darkgoldenrod3", "Data" = "darkred", "Coastal" = "aquamarine3", "Grassland" = "yellowgreen", "Freshwater" = "aquamarine2")
+colors <- c("Admin" = "grey50", "Forest" = "forestgreen", "Tundra" = "tan", "Urban" = "lavenderblush3", "Marine" = "steelblue4", "Mixed Landscape" = "darkgoldenrod3", "Data" = "darkred", "Coastal" = "steelblue2", "Grassland" = "yellowgreen", "Freshwater" = "aquamarine2")
 
 ### Icons
 
