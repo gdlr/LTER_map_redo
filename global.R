@@ -23,6 +23,16 @@ map_coords <- map_data %>%
                       "<a href=\"", Publications,"\""," target=\"_blank\"", "\">", "Link to Publications</a>", "</h4><h4>")) %>%
   mutate(Code = fct_reorder(Code, desc(Established)))
 
+# Update map data so EDI shows up in archived sites
+map_archived <- map_data %>%
+  mutate(text = paste("<h3>", Name, "</h3>",
+                      "<h4>", "Ecosystem Type:", Type, "</h4>",
+                      "<h4>", "Current Grant:", "<a href=\"", grant_link,"\"", " target=\"_blank\"", "\">", `current-grant`,"</a>", "</h4><h4>",
+                      "<a href=\"", Website,"\"", " target=\"_blank\"", "\">", "Website Link</a>", "</h4><h4>",
+                      "<a href=\"", Data,"\"", " target=\"_blank\"",  "\">", "Link to Data</a>", "</h4><h4>",
+                      "<a href=\"", Publications,"\""," target=\"_blank\"", "\">", "Link to Publications</a>", "</h4><h4>")) %>%
+  mutate(Code = fct_reorder(Code, desc(Established)))
+
 current_sites <- map_data %>% 
   filter(`Active?` == "Active") %>%
   mutate(Code = fct_reorder(Code, desc(Established)))

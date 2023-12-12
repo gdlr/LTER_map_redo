@@ -54,7 +54,7 @@ ui <- fluidPage(
                              ),
         ),
         fixedPanel(class = "oldsites",
-                   actionButton("oldSites", label = "Display archived LTER sites"),
+                   actionButton("oldSites", label = "Display former LTER sites"),
                    left = 50, top = 10,
                    align = "left"),
         fixedPanel(class = "download",
@@ -248,7 +248,7 @@ server <- function(input, output, session) {
         ##    Old Plot    ##
         ##-----      _____##
         old_plot <- ggplotly(
-                  ggplot(data = map_coords) +
+                  ggplot(data = map_archived) +
                     geom_point(aes(x = Established, y = Code, color = Type)) +
                     geom_point(aes(x = `End date`, y = Code, color = Type)) +
                     geom_segment(aes(x = Established, xend = `End date`, y = Code, yend = Code, color= Type),
@@ -369,7 +369,7 @@ server <- function(input, output, session) {
                                          siteImage = "",
                                          siteInfo = "")
           
-          old_text <- reactiveValues(siteName = paste("<h1>", "Archived LTER Sites", "</h1>", "<br>", "<h3>", "These LTER sites have been phased out of the LTER Network, though most sites continue to support other research initiaves and many still manage to contribute to current LTER science.", "</h3>"),
+          old_text <- reactiveValues(siteName = paste("<h1>", "Former LTER Sites", "</h1>", "<br>", "<h3>", "These LTER sites have been phased out of the LTER Network, though most sites continue to support other research initiaves and many still manage to contribute to current LTER science.", "</h3>"),
                                      siteImage = "",
                                      siteInfo = "")
           # 
@@ -456,7 +456,7 @@ server <- function(input, output, session) {
           # Create variable action button label based on T/F switch
           which_label <- reactive({
             if (whichplot()) {
-              "Display archived LTER sites"
+              "Display former LTER sites"
             } else {
               "Display current LTER sites"
              }
@@ -482,7 +482,7 @@ server <- function(input, output, session) {
           
           # Restore default text based on oldSites click
           observeEvent(input$oldSites, {
-              old_text$siteName = paste("<h1>", "Archived LTER Sites", "</h1>", "<br>", "<h3>", "These LTER sites have been phased out of the LTER Network, though many sites continue to support other research initiaves and some still manage to contribute to current LTER science.", "</h3>")
+              old_text$siteName = paste("<h1>", "Former LTER Sites", "</h1>", "<br>", "<h3>", "These LTER sites have been phased out of the LTER Network, though many sites continue to support other research initiaves and some still manage to contribute to current LTER science.", "</h3>")
               old_text$siteImage = ""
               old_text$siteInfo = ""
               
